@@ -6,148 +6,115 @@
   <title>Login — MyHealth Reminder</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    .auth-wrap { justify-content: flex-start; padding-top: 60px; }
-    .auth-logo { margin-bottom: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .auth-logo-icon {
-      width: 64px; height: 64px; border-radius: 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; color: var(--accent);
-    }
-    .auth-app-name { font-size: 18px; font-weight: 700; color: var(--text-primary); }
-    .auth-title    { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-    .auth-sub      { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
-    .form-box      { width: 100%; }
-    .pw-wrap       { position: relative; }
-    .pw-toggle {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: var(--text-muted); cursor: pointer;
-      padding: 4px; transition: color var(--ease);
-    }
-    .pw-toggle:hover { color: var(--accent); }
-    .auth-switch {
-      margin-top: 20px; text-align: center; font-size: 13px; color: var(--text-muted);
-    }
-    .auth-switch a {
-      color: var(--accent); font-weight: 600; text-decoration: none; cursor: pointer;
-    }
-    .auth-switch a:hover { text-decoration: underline; }
-    .divider {
-      display: flex; align-items: center; gap: 12px; margin: 18px 0;
-      font-size: 12px; color: var(--text-muted);
-    }
-    .divider::before, .divider::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
-    }
-  </style>
 </head>
 <body>
-<div class="app-wrap">
-  <div class="screen">
-    <div class="auth-wrap">
+<div class="app">
+  <div class="auth-screen">
 
-      <div class="auth-logo">
-        <div class="auth-logo-icon">
-          <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
-            <rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/>
-            <rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/>
-            <rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/>
-            <circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/>
-            <path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+    <div class="auth-logo">
+      <div class="auth-logo-ico">
+        <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/>
+          <rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/>
+          <rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/>
+          <circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="auth-app-nm">MyHealth Reminder</span>
+    </div>
+
+    <h1 class="auth-title">Welcome back!</h1>
+    <p class="auth-sub">Sign in to continue your wellness journey.</p>
+
+    <div class="auth-form">
+      <div class="form-group">
+        <label class="form-lbl">Email</label>
+        <div class="input-icon-wrap">
+          <span class="input-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 8l10 6 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <input class="form-input" id="fEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"/>
         </div>
-        <span class="auth-app-name">MyHealth Reminder</span>
+        <p class="err-msg" id="emailErr">Please enter a valid email.</p>
       </div>
 
-      <h1 class="auth-title">Welcome back!</h1>
-      <p class="auth-sub">Sign in to continue your wellness journey.</p>
-
-      <div class="form-box">
-        <div class="form-group">
-          <label class="form-lbl">Email</label>
-          <div class="input-wrap">
-            <span class="input-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 8l10 6 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </span>
-            <input class="form-input" id="fEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"/>
-          </div>
-          <p class="err-msg" id="emailErr">Please enter a valid email.</p>
+      <div class="form-group">
+        <label class="form-lbl">Password</label>
+        <div class="pw-wrap">
+          <input class="form-input" id="fPass" type="password" placeholder="Your password" autocomplete="current-password" style="padding-right:46px"/>
+          <button class="pw-tog" id="pwTog" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
         </div>
-
-        <div class="form-group">
-          <label class="form-lbl">Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="fPass" type="password" placeholder="Your password" autocomplete="current-password" style="padding-right:44px"/>
-            <button class="pw-toggle" id="pwToggle" type="button" tabindex="-1">
-              <svg id="eyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-          </div>
-          <p class="err-msg" id="passErr">Incorrect email or password.</p>
-        </div>
-
-        <button class="btn-primary" id="loginBtn" style="margin-top:4px">
-          Sign In
-        </button>
-
-        <div class="divider">or</div>
-
-        <button class="btn-outline" onclick="MH.go('signup.html')">
-          Create an Account
-        </button>
-
-        <div class="auth-switch" style="margin-top:16px">
-          <a onclick="MH.go('index.html')">← Back to Welcome</a>
-        </div>
+        <p class="err-msg" id="passErr">Incorrect email or password.</p>
       </div>
 
+      <div style="margin-top:4px">
+        <button class="btn-primary" id="loginBtn">Sign In</button>
+      </div>
+
+      <div class="divider">or</div>
+
+      <button class="btn-outline" id="goSignup">Create an Account</button>
+
+      <div class="auth-foot" style="margin-top:14px">
+        <a id="goBack">← Back to Welcome</a>
+      </div>
     </div>
   </div>
 </div>
 
 <script src="data.js"></script>
 <script>
-  if (MH.auth.isLoggedIn()) MH.go('dashboard.html');
+  /* Redirect if already logged in */
+  if (MH.auth.isLoggedIn()) { window.location.href = 'dashboard.html'; }
 
-  // Password toggle
-  document.getElementById('pwToggle').addEventListener('click', () => {
-    const inp = document.getElementById('fPass');
+  /* Password toggle */
+  document.getElementById('pwTog').onclick = function () {
+    var inp = document.getElementById('fPass');
     inp.type = inp.type === 'password' ? 'text' : 'password';
-  });
+  };
 
-  document.getElementById('loginBtn').addEventListener('click', e => {
-    MH.ripple(e.currentTarget, e);
-    const email = document.getElementById('fEmail').value.trim();
-    const pass  = document.getElementById('fPass').value;
-    let ok = true;
+  /* Navigation */
+  document.getElementById('goSignup').onclick = function () { MH.go('signup.html'); };
+  document.getElementById('goBack').onclick    = function () { MH.go('index.html'); };
 
-    document.getElementById('emailErr').classList.remove('show');
-    document.getElementById('passErr').classList.remove('show');
+  /* Login */
+  function doLogin() {
+    var email = document.getElementById('fEmail').value.trim();
+    var pass  = document.getElementById('fPass').value;
+    var eErr  = document.getElementById('emailErr');
+    var pErr  = document.getElementById('passErr');
+    eErr.classList.remove('show');
+    pErr.classList.remove('show');
 
-    if (!email || !email.includes('@')) {
-      document.getElementById('emailErr').classList.add('show'); ok = false;
-    }
+    var ok = true;
+    if (!email || email.indexOf('@') === -1) { eErr.classList.add('show'); ok = false; }
     if (!pass) {
-      document.getElementById('passErr').textContent = 'Password is required.';
-      document.getElementById('passErr').classList.add('show'); ok = false;
+      pErr.textContent = 'Password is required.';
+      pErr.classList.add('show'); ok = false;
     }
     if (!ok) return;
 
-    const res = MH.auth.login(email, pass);
+    var res = MH.auth.login(email, pass);
     if (!res.ok) {
-      document.getElementById('passErr').textContent = res.msg;
-      document.getElementById('passErr').classList.add('show');
+      pErr.textContent = res.msg;
+      pErr.classList.add('show');
       return;
     }
     MH.toast('Welcome back, ' + res.user.name.split(' ')[0] + '!');
-    setTimeout(() => MH.go('dashboard.html'), 600);
-  });
+    setTimeout(function () { window.location.href = 'dashboard.html'; }, 500);
+  }
 
-  // Allow Enter key
-  ['fEmail','fPass'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('loginBtn').click();
-    });
-  });
+  document.getElementById('loginBtn').onclick = function (e) {
+    MH.ripple(e.currentTarget, e);
+    doLogin();
+  };
+
+  /* Enter key */
+  document.getElementById('fEmail').onkeydown = function (e) { if (e.key === 'Enter') doLogin(); };
+  document.getElementById('fPass').onkeydown  = function (e) { if (e.key === 'Enter') doLogin(); };
 </script>
 </body>
 </html>

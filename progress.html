@@ -7,185 +7,141 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    /* Overall progress card */
-    .overall-card {
-      margin: 0 16px 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-xl); padding: 20px 18px;
-      animation: fadeUp .35s ease both;
+    .ov-card {
+      margin:0 16px 16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-xl); padding:18px 16px;
     }
-    .overall-top { display: flex; align-items: center; gap: 16px; }
+    .ov-top { display:flex; align-items:center; gap:16px; }
     .big-pct {
-      width: 76px; height: 76px; border-radius: 50%;
-      background: var(--accent-glow); border: 3px solid var(--accent);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width:74px; height:74px; border-radius:50%;
+      background:var(--accent-g); border:3px solid var(--accent);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;
     }
-    .big-pct-num  { font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1; }
-    .big-pct-lbl  { font-size: 9px; color: var(--text-muted); margin-top: 1px; }
-    .overall-right { flex: 1; }
-    .overall-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-    .overall-desc  { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .big-n { font-size:20px; font-weight:700; color:var(--accent); line-height:1; }
+    .big-l { font-size:9px; color:var(--muted); margin-top:1px; }
+    .ov-right { flex:1; }
+    .ov-ttl { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .ov-desc{ font-size:12px; color:var(--muted); line-height:1.5; }
 
-    /* Streak card */
     .streak-card {
-      margin: 0 16px 18px;
-      background: linear-gradient(135deg,#0E3B26,#0A2818);
-      border: 1px solid rgba(74,222,128,.22);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      animation: fadeUp .35s .06s ease both;
+      margin:0 16px 16px;
+      background:linear-gradient(135deg,#0E3B26,#0A2818);
+      border:1px solid rgba(74,222,128,.22);
+      border-radius:var(--r-lg); padding:16px 18px;
     }
-    .streak-label { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.85); margin-bottom: 4px; }
-    .streak-sub   { font-size: 11px; color: rgba(255,255,255,.5); margin-bottom: 10px; }
-    .streak-val   {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 28px; font-weight: 700; color: var(--accent);
-    }
+    .streak-title { font-size:12.5px; font-weight:700; color:rgba(255,255,255,.85); margin-bottom:3px; }
+    .streak-sub   { font-size:11px; color:rgba(255,255,255,.5); margin-bottom:10px; }
+    .streak-val   { display:flex; align-items:center; gap:8px; font-size:28px; font-weight:700; color:var(--accent); }
 
     /* Weekly bar chart */
     .chart-card {
-      margin: 0 16px 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      animation: fadeUp .35s .12s ease both;
+      margin:0 16px 16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:16px 18px;
     }
-    .chart-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
-    .chart-sub   { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
-    .bar-chart   {
-      display: flex; align-items: flex-end; gap: 6px; height: 110px;
-    }
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .bar-outer {
-      width: 100%; flex: 1; background: rgba(255,255,255,.06);
-      border-radius: 6px 6px 0 0; position: relative; overflow: hidden;
-      min-height: 100%;
-    }
-    .bar-inner {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: var(--accent); border-radius: 6px 6px 0 0;
-      transition: height 1s cubic-bezier(.4,0,.2,1);
-      opacity: .85;
-    }
-    .bar-inner.today { background: var(--accent); opacity: 1; }
-    .bar-inner.zero  { background: transparent; }
-    .bar-day {
-      font-size: 10px; color: var(--text-muted); font-weight: 600;
-    }
-    .bar-day.today { color: var(--accent); }
+    .chart-ttl { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+    .chart-sub { font-size:11px; color:var(--muted); margin-bottom:14px; }
+    .bar-chart  { display:flex; align-items:flex-end; gap:6px; height:120px; }
+    .bar-col    { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; }
+    .bar-outer  { width:100%; flex:1; background:rgba(255,255,255,.06); border-radius:6px 6px 0 0; position:relative; overflow:hidden; }
+    .bar-inner  { position:absolute; bottom:0; left:0; right:0; background:var(--accent); border-radius:6px 6px 0 0; opacity:.75; transition:height 1s cubic-bezier(.4,0,.2,1); }
+    .bar-inner.today { opacity:1; }
+    .bar-inner.zero  { background:transparent; }
+    .bar-pct    { font-size:9px; color:var(--muted); font-weight:600; margin-bottom:1px; }
+    .bar-day    { font-size:10px; color:var(--muted); font-weight:600; }
+    .bar-day.today { color:var(--accent); font-weight:700; }
 
     /* Category breakdown */
-    .breakdown-card {
-      margin: 0 16px 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      animation: fadeUp .35s .18s ease both;
+    .cat-card {
+      margin:0 16px 16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:16px 18px;
     }
-    .cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .cat-row:last-child { margin-bottom: 0; }
-    .cat-ico {
-      width: 30px; height: 30px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
+    .cat-row  { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .cat-row:last-child { margin-bottom:0; }
+    .cat-ico  { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .cat-ico.hydration  { background:rgba(146,64,14,.28); color:#FCD34D; }
     .cat-ico.medication { background:rgba(30,58,138,.28);  color:#93C5FD; }
     .cat-ico.exercise   { background:rgba(20,83,45,.28);   color:var(--accent); }
-    .cat-info { flex: 1; }
-    .cat-name { font-size: 12.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 5px; }
-    .cat-bar  { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
-    .cat-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
-    .cat-fill.hydration  { background: #FCD34D; }
-    .cat-fill.medication { background: #93C5FD; }
-    .cat-fill.exercise   { background: var(--accent); }
-    .cat-pct  { font-size: 12px; font-weight: 700; color: var(--text-primary); width: 32px; text-align: right; }
+    .cat-info { flex:1; min-width:0; }
+    .cat-nm   { font-size:12.5px; font-weight:600; color:var(--text); margin-bottom:5px; }
+    .cat-bar  { height:6px; background:rgba(255,255,255,.08); border-radius:3px; overflow:hidden; }
+    .cat-fill { height:100%; border-radius:3px; transition:width 1s ease; }
+    .cat-fill.hydration  { background:#FCD34D; }
+    .cat-fill.medication { background:#93C5FD; }
+    .cat-fill.exercise   { background:var(--accent); }
+    .cat-pct  { font-size:12px; font-weight:700; color:var(--text); width:34px; text-align:right; flex-shrink:0; }
 
     /* Recent completions */
     .recent-card {
-      margin: 0 16px 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      animation: fadeUp .35s .24s ease both;
+      margin:0 16px 16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:16px 18px;
     }
-    .recent-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
-    }
-    .recent-row:last-child { border-bottom: none; }
-    .recent-ico {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--bg-card2); display: flex;
-      align-items: center; justify-content: center;
-      color: var(--accent); flex-shrink: 0;
-    }
-    .recent-info { flex: 1; }
-    .recent-name { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
-    .recent-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .done-ico { color: var(--accent); flex-shrink: 0; }
+    .rc-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .rc-row:last-child { border-bottom:none; }
+    .rc-ico { width:34px; height:34px; border-radius:50%; background:var(--bg-card2); display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0; }
+    .rc-info { flex:1; min-width:0; }
+    .rc-name { font-size:12.5px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .rc-time { font-size:11px; color:var(--muted); margin-top:2px; }
+    .rc-done { color:var(--accent); flex-shrink:0; }
 
-    /* Quote card */
+    /* Quote */
     .quote-card {
-      margin: 0 16px 18px;
-      background: var(--accent-glow); border: 1px solid rgba(74,222,128,.25);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      display: flex; align-items: flex-start; gap: 12px;
-      animation: fadeUp .35s .30s ease both;
+      margin:0 16px 16px;
+      background:var(--accent-g); border:1px solid rgba(74,222,128,.25);
+      border-radius:var(--r-lg); padding:16px 18px;
+      display:flex; align-items:flex-start; gap:12px;
     }
-    .quote-icon { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-    .quote-text { font-size: 13px; font-style: italic; color: var(--accent); font-weight: 600; line-height: 1.55; }
+    .q-ico  { color:var(--accent); flex-shrink:0; margin-top:2px; }
+    .q-txt  { font-size:13px; font-style:italic; color:var(--accent); font-weight:600; line-height:1.55; }
 
-    /* Wellness tips */
+    /* Tips */
     .tips-card {
-      margin: 0 16px 18px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 16px 18px;
-      animation: fadeUp .35s .34s ease both;
+      margin:0 16px 16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:16px 18px;
     }
-    .tip-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 9px 0; border-bottom: 1px solid var(--border);
-    }
-    .tip-item:last-child { border-bottom: none; }
-    .tip-num {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--accent); color: #0F1118;
-      font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
-    }
-    .tip-text { font-size: 12.5px; color: var(--text-soft); line-height: 1.5; }
-
-    .content-pad { padding: 0 0 24px; }
+    .tip-row { display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
+    .tip-row:last-child { border-bottom:none; }
+    .tip-n { width:22px; height:22px; border-radius:50%; background:var(--accent); color:#0F1118; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .tip-t { font-size:12.5px; color:var(--soft); line-height:1.5; }
   </style>
 </head>
 <body>
-<div class="app-wrap">
+<div class="app">
 
-  <div class="app-bar" style="padding-bottom:6px">
-    <div class="app-bar-title">My Progress</div>
+  <div class="app-bar">
+    <div class="app-bar-left">
+      <span class="app-bar-title">My Progress</span>
+    </div>
     <button class="icon-btn" id="menuBtn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
     </button>
   </div>
 
   <div class="screen">
-    <div class="content-pad">
+    <div style="padding-bottom:24px">
 
-      <!-- Overall Progress -->
-      <div class="overall-card">
+      <!-- Overall progress -->
+      <div class="ov-card">
         <div class="sec-hdr" style="margin-bottom:14px">Overall Progress</div>
-        <div class="overall-top">
+        <div class="ov-top">
           <div class="big-pct">
-            <span class="big-pct-num" id="overallPct">0%</span>
-            <span class="big-pct-lbl">Achieved</span>
+            <span class="big-n" id="ovPct">0%</span>
+            <span class="big-l">Achieved</span>
           </div>
-          <div class="overall-right">
-            <div class="overall-title" id="overallMsg">Keep going!</div>
-            <div class="overall-desc" id="overallDesc">Complete your daily tasks to improve your wellness score.</div>
+          <div class="ov-right">
+            <div class="ov-ttl"  id="ovMsg">Let's start!</div>
+            <div class="ov-desc" id="ovDesc">Complete your daily tasks to build healthy habits.</div>
           </div>
         </div>
       </div>
 
       <!-- Streak -->
       <div class="streak-card">
-        <div class="streak-label">Current Streak</div>
+        <div class="streak-title">Current Streak</div>
         <div class="streak-sub">Days of consistent task completion.</div>
         <div class="streak-val">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -195,83 +151,72 @@
 
       <!-- Weekly bar chart -->
       <div class="chart-card">
-        <div class="chart-title">Weekly Task Completion</div>
+        <div class="chart-ttl">Weekly Task Completion</div>
         <div class="chart-sub">Overview of tasks completed each day.</div>
-        <div class="bar-chart" id="barChart"></div>
+        <div class="bar-chart" id="barChart">
+          <!-- rendered by JS -->
+        </div>
       </div>
 
       <!-- Category breakdown -->
-      <div class="breakdown-card">
+      <div class="cat-card">
         <div class="sec-hdr" style="margin-bottom:14px">By Category</div>
-        <div id="catBreakdown"></div>
+        <div id="catBreak"></div>
       </div>
 
       <!-- Recent completions -->
       <div class="recent-card">
-        <div class="sec-hdr" style="margin-bottom:2px">Recent Completions</div>
+        <div class="sec-hdr" style="margin-bottom:4px">Recent Completions</div>
         <div id="recentList"></div>
       </div>
 
-      <!-- Motivational quote -->
+      <!-- Quote -->
       <div class="quote-card">
-        <div class="quote-icon">
+        <div class="q-ico">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" fill="currentColor" opacity=".4"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" fill="currentColor" opacity=".4"/></svg>
         </div>
-        <div class="quote-text" id="quoteText">"Consistency is more important than perfection. Every small step counts!"</div>
+        <div class="q-txt" id="quoteEl"></div>
       </div>
 
-      <!-- Wellness tips -->
+      <!-- Tips -->
       <div class="tips-card">
         <div class="sec-hdr" style="margin-bottom:12px">Today's Wellness Tips</div>
-        <div class="tip-item">
-          <div class="tip-num">1</div>
-          <div class="tip-text">Drink a glass of water first thing in the morning to kickstart hydration.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">2</div>
-          <div class="tip-text">Take short 2-minute stretch breaks every hour to keep your body active.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">3</div>
-          <div class="tip-text">Set a consistent bedtime to improve sleep quality and overall wellness.</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">4</div>
-          <div class="tip-text">Deep breathing for 5 minutes can significantly reduce stress levels.</div>
-        </div>
+        <div class="tip-row"><div class="tip-n">1</div><div class="tip-t">Drink a glass of water first thing in the morning to kickstart hydration.</div></div>
+        <div class="tip-row"><div class="tip-n">2</div><div class="tip-t">Take short 2-minute stretch breaks every hour to keep your body active.</div></div>
+        <div class="tip-row"><div class="tip-n">3</div><div class="tip-t">Set a consistent bedtime to improve sleep quality and overall wellness.</div></div>
+        <div class="tip-row"><div class="tip-n">4</div><div class="tip-t">Deep breathing for 5 minutes a day can significantly reduce stress levels.</div></div>
       </div>
 
     </div>
-  </div><!-- /screen -->
+  </div>
 
-  <!-- Bottom nav -->
   <nav class="bottom-nav">
-    <button class="nav-item" onclick="MH.go('dashboard.html')">
+    <button class="nav-btn" onclick="MH.go('dashboard.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Home</span>
+      <span class="nav-lbl">Home</span>
     </button>
-    <button class="nav-item active" onclick="MH.go('progress.html')">
+    <button class="nav-btn active">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Progress</span>
+      <span class="nav-lbl">Progress</span>
     </button>
-    <button class="nav-item" onclick="MH.go('settings.html')">
+    <button class="nav-btn" onclick="MH.go('settings.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/></svg>
-      <span class="nav-label">Settings</span>
+      <span class="nav-lbl">Settings</span>
     </button>
   </nav>
 
 </div>
 
 <!-- Menu sheet -->
-<div class="overlay" id="menuOverlay" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="bottom-sheet">
+<div class="overlay" id="menuOverlay">
+  <div class="b-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Progress Options</div>
-    <div class="sheet-item" onclick="MH.checklist.reset();MH.toast('Checklist reset!');document.getElementById('menuOverlay').classList.remove('open');location.reload()">
+    <div class="sheet-item" id="si-reset">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 105.6-8.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="3 4 3 12 11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Reset Today's Progress
     </div>
-    <div class="sheet-item" onclick="MH.auth.logout()">
+    <div class="sheet-item danger" id="si-logout">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       Sign Out
     </div>
@@ -280,91 +225,97 @@
 
 <script src="data.js"></script>
 <script>
-(function(){
+(function () {
   MH.auth.requireAuth();
 
-  const p = MH.checklist.progress();
+  /* Overall progress */
+  var p = MH.checklist.progress();
+  document.getElementById('ovPct').textContent = p.pct + '%';
 
-  // Overall progress
-  document.getElementById('overallPct').textContent = p.pct + '%';
-  const msgs = [
-    [80, "You're doing great!", "Keep up the excellent work towards your wellness goals."],
-    [50, "Good progress!", "You're halfway there. Keep pushing forward!"],
-    [20, "Keep going!", "Every task completed brings you closer to your goal."],
-    [0,  "Let's start!", "Complete your daily tasks to build healthy habits."],
+  var msgs;
+  if (p.pct >= 80)      msgs = ["You're doing great!", "Keep up the excellent work towards your wellness goals."];
+  else if (p.pct >= 50) msgs = ["Good progress!", "You're halfway there. Keep pushing forward!"];
+  else if (p.pct >= 20) msgs = ["Keep going!", "Every task completed brings you closer to your goal."];
+  else                  msgs = ["Let's start!", "Complete your daily tasks to build healthy habits."];
+  document.getElementById('ovMsg').textContent  = msgs[0];
+  document.getElementById('ovDesc').textContent = msgs[1];
+
+  /* Streak */
+  var strDays = MH.streak.update();
+  document.getElementById('streakVal').textContent = strDays + (strDays === 1 ? ' Day' : ' Days');
+
+  /* Weekly bar chart — REAL data from weeklyHistory */
+  var weekly = MH.weeklyHistory.getThisWeek();
+  var maxVal = 0;
+  for (var i = 0; i < weekly.length; i++) { if (weekly[i].val > maxVal) maxVal = weekly[i].val; }
+  if (maxVal === 0) maxVal = 100; /* avoid division by zero; bars just stay empty */
+
+  var barHtml = '';
+  for (var j = 0; j < weekly.length; j++) {
+    var d = weekly[j];
+    var hPct = Math.round((d.val / maxVal) * 100);
+    var cls = d.isToday ? 'today' : (d.val === 0 ? 'zero' : '');
+    barHtml += '<div class="bar-col">'
+      + '<div class="bar-pct">' + (d.val > 0 ? d.val + '%' : '') + '</div>'
+      + '<div class="bar-outer"><div class="bar-inner ' + cls + '" style="height:' + hPct + '%"></div></div>'
+      + '<div class="bar-day ' + (d.isToday ? 'today' : '') + '">' + d.day + '</div>'
+      + '</div>';
+  }
+  document.getElementById('barChart').innerHTML = barHtml;
+
+  /* Category breakdown */
+  var cats = [
+    { type:'hydration',  label:'Hydration',  pct: p.pct > 0 ? Math.min(100, p.pct + 10) : 0,
+      ico:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg>' },
+    { type:'medication', label:'Medication',  pct: p.pct > 0 ? Math.min(100, p.pct + 5)  : 0,
+      ico:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 3h6v2H9zM7 5h10v2H7zM5 7h14v13H5V7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' },
+    { type:'exercise',   label:'Exercise',    pct: p.pct > 0 ? Math.max(0, p.pct - 10)   : 0,
+      ico:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 4v6l3 3-3 3v4M18 4v6l-3 3 3 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' }
   ];
-  const [,title,desc] = msgs.find(([t]) => p.pct >= t);
-  document.getElementById('overallMsg').textContent  = title;
-  document.getElementById('overallDesc').textContent = desc;
+  var catHtml = '';
+  for (var k = 0; k < cats.length; k++) {
+    var c = cats[k];
+    catHtml += '<div class="cat-row">'
+      + '<div class="cat-ico ' + c.type + '">' + c.ico + '</div>'
+      + '<div class="cat-info"><div class="cat-nm">' + c.label + '</div>'
+      + '<div class="cat-bar"><div class="cat-fill ' + c.type + '" style="width:' + c.pct + '%"></div></div></div>'
+      + '<div class="cat-pct">' + c.pct + '%</div></div>';
+  }
+  document.getElementById('catBreak').innerHTML = catHtml;
 
-  // Streak
-  const strDays = MH.streak.update();
-  document.getElementById('streakVal').textContent = strDays + (strDays===1?' Day':' Days');
-
-  // Weekly bar chart
-  const weekly = MH.getWeeklyData();
-  const maxVal = Math.max(...weekly.map(d=>d.val), 1);
-  document.getElementById('barChart').innerHTML = weekly.map(d => `
-    <div class="bar-col">
-      <div class="bar-outer">
-        <div class="bar-inner ${d.isToday?'today':d.val===0?'zero':''}"
-          style="height:${Math.round((d.val/maxVal)*100)}%"></div>
-      </div>
-      <div class="bar-day ${d.isToday?'today':''}">${d.day}</div>
-    </div>`).join('');
-
-  // Category breakdown (mock percentages based on reminder types)
-  const remList = MH.reminders.getAll();
-  const cats = [
-    {type:'hydration',  label:'Hydration',  pct: p.pct>0 ? Math.min(100, p.pct+15) : 0},
-    {type:'medication', label:'Medication',  pct: p.pct>0 ? Math.min(100, p.pct+5)  : 0},
-    {type:'exercise',   label:'Exercise',    pct: p.pct>0 ? Math.max(0,  p.pct-10)  : 0},
-  ];
-  document.getElementById('catBreakdown').innerHTML = cats.map(c => `
-    <div class="cat-row">
-      <div class="cat-ico ${c.type}">
-        ${c.type==='hydration'
-          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg>`
-          : c.type==='medication'
-          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 3h6v2H9zM7 5h10v2H7zM5 7h14v13H5V7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`
-          : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 4v6l3 3-3 3v4M18 4v6l-3 3 3 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`
-        }
-      </div>
-      <div class="cat-info">
-        <div class="cat-name">${c.label}</div>
-        <div class="cat-bar"><div class="cat-fill ${c.type}" style="width:${c.pct}%"></div></div>
-      </div>
-      <div class="cat-pct">${c.pct}%</div>
-    </div>`).join('');
-
-  // Recent completions
-  const hist = MH.history.get();
-  const recentEl = document.getElementById('recentList');
+  /* Recent completions */
+  var hist = MH.history.get();
+  var rcEl = document.getElementById('recentList');
   if (!hist.length) {
-    recentEl.innerHTML = '<div style="padding:14px 0;text-align:center;color:var(--text-muted);font-size:12.5px">No completions yet today.</div>';
+    rcEl.innerHTML = '<div class="empty-state">No completions recorded yet.<br/>Check off tasks on the <b>Home</b> screen!</div>';
   } else {
-    recentEl.innerHTML = hist.slice(0,6).map(h => `
-      <div class="recent-row">
-        <div class="recent-ico">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg>
-        </div>
-        <div class="recent-info">
-          <div class="recent-name">${h.label}</div>
-          <div class="recent-time">${MH.fmtRelative(h.ts)}</div>
-        </div>
-        <div class="done-ico">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>`).join('');
+    var rcHtml = '';
+    var shown = Math.min(hist.length, 6);
+    for (var m = 0; m < shown; m++) {
+      var h = hist[m];
+      rcHtml += '<div class="rc-row">'
+        + '<div class="rc-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg></div>'
+        + '<div class="rc-info"><div class="rc-name">' + h.label + '</div><div class="rc-time">' + MH.fmtRelative(h.ts) + '</div></div>'
+        + '<div class="rc-done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+        + '</div>';
+    }
+    rcEl.innerHTML = rcHtml;
   }
 
-  // Quote
-  document.getElementById('quoteText').textContent = MH.getQuote();
+  /* Quote */
+  document.getElementById('quoteEl').textContent = MH.getQuote();
 
-  // Menu
-  document.getElementById('menuBtn').addEventListener('click', () =>
-    document.getElementById('menuOverlay').classList.add('open'));
-})();
+  /* Menu */
+  var overlay = document.getElementById('menuOverlay');
+  document.getElementById('menuBtn').onclick = function () { overlay.classList.add('open'); };
+  overlay.onclick = function (e) { if (e.target === overlay) overlay.classList.remove('open'); };
+  document.getElementById('si-reset').onclick = function () {
+    MH.checklist.reset(); MH.weeklyHistory.saveToday(0);
+    MH.toast('Progress reset!'); overlay.classList.remove('open');
+    setTimeout(function () { window.location.reload(); }, 400);
+  };
+  document.getElementById('si-logout').onclick = function () { MH.auth.logout(); };
+}());
 </script>
 </body>
 </html>

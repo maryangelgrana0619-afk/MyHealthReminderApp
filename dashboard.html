@@ -7,178 +7,160 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 18px 10px; flex-shrink: 0;
-    }
-    .user-row {
-      display: flex; align-items: center; gap: 12px; padding: 2px 18px 16px;
-    }
+    /* User greeting */
+    .user-row { display:flex; align-items:center; gap:12px; padding:2px 16px 16px; }
     .avatar {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: #1D4ED8; display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0;
+      width:42px; height:42px; border-radius:50%;
+      background:#1D4ED8; display:flex; align-items:center; justify-content:center;
+      font-size:16px; font-weight:700; color:#fff; flex-shrink:0;
     }
-    .user-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-    .user-sub  { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .u-name { font-size:14px; font-weight:700; color:var(--text); }
+    .u-sub  { font-size:11px; color:var(--muted); margin-top:2px; }
 
     /* Progress card */
     .prog-card {
-      margin: 0 16px 20px;
-      background: linear-gradient(145deg,#0E3B26 0%,#0A2818 100%);
-      border: 1px solid rgba(74,222,128,.18);
-      border-radius: var(--r-xl); padding: 20px 18px 18px;
-      display: flex; flex-direction: column; align-items: center;
-      animation: fadeUp .4s ease both;
+      margin:0 16px 18px;
+      background:linear-gradient(145deg,#0E3B26,#0A2818);
+      border:1px solid rgba(74,222,128,.18);
+      border-radius:var(--r-xl); padding:20px 18px;
+      display:flex; flex-direction:column; align-items:center;
     }
-    .ring-wrap { position: relative; width: 90px; height: 90px; margin-bottom: 12px; }
-    .ring-wrap svg { transform: rotate(-90deg); }
-    .ring-track { fill:none; stroke:#1A4730; stroke-width:8; }
-    .ring-fill  {
-      fill:none; stroke:var(--accent); stroke-width:8; stroke-linecap:round;
-      transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);
-    }
-    .ring-lbl {
-      position:absolute; inset:0; display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-    }
-    .ring-pct   { font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1; }
-    .ring-sub   { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
-    .prog-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.85); margin-bottom: 3px; }
-    .prog-tasks { font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
-    .prog-quote { font-size: 11px; color: rgba(255,255,255,.5); font-style: italic; text-align: center; line-height: 1.5; }
+    .prog-ring  { position:relative; width:88px; height:88px; margin-bottom:12px; }
+    .prog-ring svg { transform:rotate(-90deg); }
+    .prog-ring-track { fill:none; stroke:#1A4730; stroke-width:8; }
+    .prog-ring-fill  { fill:none; stroke:var(--accent); stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1); }
+    .prog-lbl   { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .prog-pct   { font-size:18px; font-weight:700; color:var(--text); line-height:1; }
+    .prog-ach   { font-size:9px; color:var(--muted); margin-top:2px; }
+    .prog-title { font-size:14px; font-weight:600; color:rgba(255,255,255,.85); margin-bottom:3px; }
+    .prog-tasks { font-size:21px; font-weight:700; color:var(--accent); margin-bottom:6px; }
+    .prog-quote { font-size:11px; color:rgba(255,255,255,.5); font-style:italic; text-align:center; line-height:1.5; }
 
-    .content { padding: 0 16px 24px; }
-
+    /* Add reminder btn */
     .add-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; height: 50px; border: none; border-radius: var(--r-pill);
-      background: var(--accent); color: #0F1118;
-      font-family: var(--font); font-size: 14px; font-weight: 700;
-      cursor: pointer; position: relative; overflow: hidden;
-      transition: background var(--ease), box-shadow var(--ease), transform var(--ease);
-      box-shadow: 0 4px 18px rgba(74,222,128,.22);
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; height:50px; border:none; border-radius:var(--r-pill);
+      background:var(--accent); color:#0F1118;
+      font-family:var(--font); font-size:14px; font-weight:700;
+      cursor:pointer; position:relative; overflow:hidden;
+      transition:background var(--ease), box-shadow var(--ease), transform var(--ease);
+      box-shadow:0 4px 18px rgba(74,222,128,.22);
     }
-    .add-btn:hover  { background: #6EF09A; box-shadow: 0 6px 26px rgba(74,222,128,.36); }
-    .add-btn:active { transform: scale(.97); }
+    .add-btn:hover  { background:#6EF09A; box-shadow:0 6px 26px rgba(74,222,128,.36); }
+    .add-btn:active { transform:scale(.97); }
 
-    .del-btn {
-      background: none; border: none; color: var(--text-muted);
-      cursor: pointer; padding: 4px; border-radius: 6px;
-      transition: color var(--ease); flex-shrink: 0;
-    }
-    .del-btn:hover { color: #F87171; }
-    .empty-state { text-align: center; padding: 16px 0; color: var(--text-muted); font-size: 12.5px; }
-
-    /* Section with mb */
-    .sec-block { margin-bottom: 18px; }
+    .sec-block { margin-bottom:18px; }
   </style>
 </head>
 <body>
-<div class="app-wrap">
+<div class="app">
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <div class="app-bar-logo">
-      <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/><rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/><rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/><circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/><path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- Top bar: logo + app name + menu -->
+  <div class="app-bar">
+    <div class="app-bar-left">
+      <div class="app-bar-logo">
+        <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/><rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/><rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/><circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/><path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="app-bar-name">MyHealth Reminder</span>
     </div>
-    <button class="icon-btn" id="menuBtn" aria-label="Menu">
+    <button class="icon-btn" id="menuBtn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
     </button>
   </div>
 
-  <!-- User row -->
+  <!-- User greeting -->
   <div class="user-row">
     <div class="avatar" id="avatarEl">M</div>
     <div>
-      <div class="user-name" id="userNameEl">Loading...</div>
-      <div class="user-sub"  id="userSubEl">0 of 4 tasks completed today</div>
+      <div class="u-name" id="userNameEl">Loading...</div>
+      <div class="u-sub"  id="userSubEl">0 of 4 tasks completed today</div>
     </div>
   </div>
 
   <!-- Scrollable content -->
-  <div class="screen" id="mainScr">
+  <div class="screen">
+    <div>
 
-    <!-- Progress ring -->
-    <div class="prog-card">
-      <div class="ring-wrap">
-        <svg width="90" height="90" viewBox="0 0 90 90">
-          <circle class="ring-track" cx="45" cy="45" r="38"/>
-          <circle class="ring-fill"  cx="45" cy="45" r="38" id="ringFill"
-            stroke-dasharray="238.76" stroke-dashoffset="238.76"/>
-        </svg>
-        <div class="ring-lbl">
-          <span class="ring-pct" id="ringPct">0%</span>
-          <span class="ring-sub">Achieved</span>
+      <!-- Progress ring card -->
+      <div class="prog-card">
+        <div class="prog-ring">
+          <svg width="88" height="88" viewBox="0 0 88 88">
+            <circle class="prog-ring-track" cx="44" cy="44" r="36"/>
+            <circle class="prog-ring-fill"  cx="44" cy="44" r="36" id="ringFill"
+              stroke-dasharray="226.19" stroke-dashoffset="226.19"/>
+          </svg>
+          <div class="prog-lbl">
+            <span class="prog-pct" id="ringPct">0%</span>
+            <span class="prog-ach">Achieved</span>
+          </div>
         </div>
-      </div>
-      <div class="prog-title">Daily Progress</div>
-      <div class="prog-tasks" id="progTasks">0/4 Tasks</div>
-      <div class="prog-quote" id="progQuote">Consistency is the key to lasting wellness.</div>
-    </div>
-
-    <!-- Content -->
-    <div class="content">
-
-      <div class="sec-block">
-        <div class="sec-hdr">Today's Reminders</div>
-        <div class="card-box" id="reminderList"></div>
+        <div class="prog-title">Daily Progress</div>
+        <div class="prog-tasks" id="progTasks">0/4 Tasks</div>
+        <div class="prog-quote" id="progQuote">Consistency is the key to lasting wellness.</div>
       </div>
 
-      <div class="sec-block">
-        <div class="sec-hdr">Daily Checklist</div>
-        <div class="card-box" id="checkList"></div>
+      <!-- Sections -->
+      <div class="pad">
+
+        <div class="sec-block">
+          <div class="sec-hdr">Today's Reminders</div>
+          <div class="card" id="reminderList"></div>
+        </div>
+
+        <div class="sec-block">
+          <div class="sec-hdr">Daily Checklist</div>
+          <div class="card" id="checkList"></div>
+        </div>
+
+        <button class="add-btn" id="addBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Add / Edit Reminders
+        </button>
+
       </div>
-
-      <button class="add-btn" id="addBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-        Add/Edit Reminders
-      </button>
-
     </div>
   </div><!-- /screen -->
 
   <!-- Bottom nav -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="MH.go('dashboard.html')">
+    <button class="nav-btn active" onclick="MH.go('dashboard.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Home</span>
+      <span class="nav-lbl">Home</span>
     </button>
-    <button class="nav-item" onclick="MH.go('progress.html')">
+    <button class="nav-btn" onclick="MH.go('progress.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Progress</span>
+      <span class="nav-lbl">Progress</span>
     </button>
-    <button class="nav-item" onclick="MH.go('settings.html')">
+    <button class="nav-btn" onclick="MH.go('settings.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/></svg>
-      <span class="nav-label">Settings</span>
+      <span class="nav-lbl">Settings</span>
     </button>
   </nav>
 
-</div><!-- /app-wrap -->
+</div>
 
-<!-- 3-dot menu bottom sheet -->
-<div class="overlay" id="menuOverlay" onclick="closeMenu(event)">
-  <div class="bottom-sheet">
+<!-- 3-dot quick-action sheet -->
+<div class="overlay" id="menuOverlay">
+  <div class="b-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Quick Actions</div>
-
-    <div class="sheet-item" onclick="MH.go('reminder.html')">
+    <div class="sheet-item" id="si-addrem">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       Add New Reminder
     </div>
-    <div class="sheet-item" onclick="resetChecklist()">
+    <div class="sheet-item" id="si-reset">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 105.6-8.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="3 4 3 12 11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Reset Today's Checklist
     </div>
-    <div class="sheet-item" onclick="MH.go('progress.html')">
+    <div class="sheet-item" id="si-progress">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       View My Progress
     </div>
-    <div class="sheet-item" onclick="MH.go('settings.html')">
+    <div class="sheet-item" id="si-settings">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/></svg>
       Settings
     </div>
-    <div class="sheet-item danger" onclick="MH.auth.logout()">
+    <div class="sheet-item danger" id="si-logout">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       Sign Out
     </div>
@@ -187,78 +169,99 @@
 
 <script src="data.js"></script>
 <script>
-(function(){
+(function () {
   MH.auth.requireAuth();
 
-  const ICONS = {
-    hydration:  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg>`,
-    medication: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 3h6v2H9zM7 5h10v2H7zM5 7h14v13a1 1 0 01-1 1H6a1 1 0 01-1-1V7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 11v6M9 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-    exercise:   `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 4v6l3 3-3 3v4M18 4v6l-3 3 3 3v4M3 9h4M17 9h4M3 15h4M17 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  var ICONS = {
+    hydration:  '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z" stroke="currentColor" stroke-width="2"/></svg>',
+    medication: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 3h6v2H9zM7 5h10v2H7zM5 7h14v13a1 1 0 01-1 1H6a1 1 0 01-1-1V7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 11v6M9 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    exercise:   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 4v6l3 3-3 3v4M18 4v6l-3 3 3 3v4M3 9h4M17 9h4M3 15h4M17 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
   };
 
-  const sess = MH.auth.getSession();
-  document.getElementById('userNameEl').textContent   = sess.name;
-  document.getElementById('avatarEl').textContent     = sess.name.charAt(0).toUpperCase();
-  document.getElementById('progQuote').textContent    = MH.getQuote();
+  var sess = MH.auth.getSession();
+  document.getElementById('userNameEl').textContent = sess.name;
+  document.getElementById('avatarEl').textContent   = sess.name.charAt(0).toUpperCase();
+  document.getElementById('progQuote').textContent  = MH.getQuote();
 
   function renderReminders() {
-    const list = MH.reminders.getAll();
-    const el = document.getElementById('reminderList');
-    if (!list.length) { el.innerHTML = '<div class="empty-state">No reminders yet.</div>'; return; }
-    el.innerHTML = list.map(r => `
-      <div class="reminder-row">
-        <div class="reminder-ico ${r.type}">${ICONS[r.type]||ICONS.hydration}</div>
-        <span class="reminder-name">${r.title}</span>
-        <span class="tag ${r.type}">${r.type.charAt(0).toUpperCase()+r.type.slice(1)}</span>
-        <span class="reminder-time">${MH.fmtTime(r.time)}</span>
-        <button class="del-btn" onclick="delReminder('${r.id}')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>`).join('');
+    var list = MH.reminders.getAll();
+    var el = document.getElementById('reminderList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state">No reminders yet.<br/><b>Tap "Add / Edit Reminders" below</b> to add your first one!</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i];
+      var ico = ICONS[r.type] || ICONS.hydration;
+      var typeCap = r.type.charAt(0).toUpperCase() + r.type.slice(1);
+      html += '<div class="rem-row">'
+        + '<div class="rem-ico ' + r.type + '">' + ico + '</div>'
+        + '<span class="rem-name">' + r.title + '</span>'
+        + '<span class="tag ' + r.type + '">' + typeCap + '</span>'
+        + '<span class="rem-time">' + MH.fmtTime(r.time) + '</span>'
+        + '<button class="icon-del" onclick="delRem(\'' + r.id + '\')">'
+        + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+        + '</button></div>';
+    }
+    el.innerHTML = html;
   }
 
   function renderChecklist() {
-    const list = MH.checklist.get();
-    document.getElementById('checkList').innerHTML = list.map(c => `
-      <div class="check-item" onclick="toggleCheck('${c.id}')">
-        <div class="check-box ${c.done?'done':''}">
-          ${c.done?`<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F1118" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}
-        </div>
-        <span class="check-lbl ${c.done?'done':''}">${c.label}</span>
-      </div>`).join('');
+    var list = MH.checklist.get();
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var c = list[i];
+      var ck = c.done
+        ? '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F1118" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : '';
+      html += '<div class="chk-item" onclick="toggleCheck(\'' + c.id + '\')">'
+        + '<div class="chk-box' + (c.done ? ' done' : '') + '">' + ck + '</div>'
+        + '<span class="chk-lbl' + (c.done ? ' done' : '') + '">' + c.label + '</span>'
+        + '</div>';
+    }
+    document.getElementById('checkList').innerHTML = html;
     updateProgress();
   }
 
   function updateProgress() {
-    const p = MH.checklist.progress();
-    const C = 238.76, off = C - (p.pct/100)*C;
+    var p = MH.checklist.progress();
+    var C = 226.19;
+    var off = C - (p.pct / 100) * C;
     document.getElementById('ringFill').style.strokeDashoffset = off;
-    document.getElementById('ringPct').textContent  = p.pct+'%';
-    document.getElementById('progTasks').textContent = `${p.done}/${p.total} Tasks`;
-    document.getElementById('userSubEl').textContent = `${p.done} of ${p.total} tasks completed today`;
+    document.getElementById('ringPct').textContent   = p.pct + '%';
+    document.getElementById('progTasks').textContent = p.done + '/' + p.total + ' Tasks';
+    document.getElementById('userSubEl').textContent = p.done + ' of ' + p.total + ' tasks completed today';
+    /* Save to weekly history every time progress changes */
+    MH.weeklyHistory.saveToday(p.pct);
   }
 
-  window.toggleCheck   = id => { MH.checklist.toggle(id); renderChecklist(); };
-  window.delReminder   = id => { MH.reminders.delete(id); renderReminders(); };
-  window.resetChecklist = () => {
-    MH.checklist.reset(); renderChecklist();
-    MH.toast('Checklist reset!'); closeMenu();
+  window.toggleCheck = function (id) { MH.checklist.toggle(id); renderChecklist(); };
+  window.delRem = function (id) { MH.reminders.delete(id); renderReminders(); MH.toast('Reminder removed.'); };
+
+  /* 3-dot menu */
+  var overlay = document.getElementById('menuOverlay');
+  document.getElementById('menuBtn').onclick = function () { overlay.classList.add('open'); };
+  overlay.onclick = function (e) { if (e.target === overlay) overlay.classList.remove('open'); };
+
+  function closeMenu() { overlay.classList.remove('open'); }
+
+  document.getElementById('si-addrem').onclick = function () { closeMenu(); MH.go('reminder.html'); };
+  document.getElementById('si-reset').onclick  = function () { MH.checklist.reset(); renderChecklist(); MH.toast('Checklist reset!'); closeMenu(); };
+  document.getElementById('si-progress').onclick = function () { closeMenu(); MH.go('progress.html'); };
+  document.getElementById('si-settings').onclick = function () { closeMenu(); MH.go('settings.html'); };
+  document.getElementById('si-logout').onclick   = function () { closeMenu(); MH.auth.logout(); };
+
+  document.getElementById('addBtn').onclick = function (e) {
+    MH.ripple(e.currentTarget, e);
+    setTimeout(function () { MH.go('reminder.html'); }, 200);
   };
 
-  // 3-dot menu
-  const overlay = document.getElementById('menuOverlay');
-  document.getElementById('menuBtn').addEventListener('click', () => overlay.classList.add('open'));
-  window.closeMenu = e => { if (!e || !e.target.closest('.bottom-sheet') || e.target===overlay) overlay.classList.remove('open'); };
-
-  document.getElementById('addBtn').addEventListener('click', e => {
-    MH.ripple(e.currentTarget, e);
-    setTimeout(() => MH.go('reminder.html'), 200);
-  });
-
+  /* Initial render */
   renderReminders();
   renderChecklist();
   setTimeout(updateProgress, 80);
-})();
+}());
 </script>
 </body>
 </html>

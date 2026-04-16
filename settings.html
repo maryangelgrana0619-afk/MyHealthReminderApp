@@ -7,212 +7,142 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    .content { padding: 0 16px 32px; }
-    .mb16 { margin-bottom: 16px; }
-    .mb20 { margin-bottom: 20px; }
-
-    /* Profile card */
-    .profile-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-xl); padding: 18px 16px;
-      display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
-      cursor: pointer; transition: border-color var(--ease);
+    .prof-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-xl); padding:18px 16px;
+      display:flex; align-items:center; gap:14px; margin:0 16px 20px;
+      cursor:pointer; transition:border-color var(--ease);
     }
-    .profile-card:hover { border-color: rgba(74,222,128,.3); }
-    .avatar-lg {
-      width: 54px; height: 54px; border-radius: 50%;
-      background: #1D4ED8; display: flex; align-items: center; justify-content: center;
-      font-size: 20px; font-weight: 700; color: #fff; flex-shrink: 0;
+    .prof-card:hover { border-color:rgba(74,222,128,.3); }
+    .av-lg {
+      width:52px; height:52px; border-radius:50%;
+      background:#1D4ED8; display:flex; align-items:center; justify-content:center;
+      font-size:20px; font-weight:700; color:#fff; flex-shrink:0;
     }
-    .profile-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .profile-email { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .profile-edit-hint { font-size: 11px; color: var(--accent); margin-top: 3px; }
+    .pn { font-size:15px; font-weight:700; color:var(--text); }
+    .pe { font-size:12px; color:var(--muted); margin-top:2px; }
+    .ph { font-size:11px; color:var(--accent); margin-top:3px; }
+    .pad16 { padding:0 16px; }
+    .mb18  { margin-bottom:18px; }
 
-    .chevron { color: var(--text-muted); margin-left: auto; flex-shrink: 0; }
-
-    /* Danger button */
-    .danger-btn {
-      width: 100%; height: 48px;
-      border: 1px solid rgba(248,113,113,.25); border-radius: var(--r-md);
-      background: rgba(248,113,113,.08); color: #F87171;
-      font-family: var(--font); font-size: 13.5px; font-weight: 600;
-      cursor: pointer; transition: all var(--ease); margin-top: 8px;
-    }
-    .danger-btn:hover { background: rgba(248,113,113,.16); border-color: rgba(248,113,113,.45); }
-
-    /* Edit profile modal */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.7);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 200; opacity: 0; pointer-events: none; transition: opacity .25s;
-      padding: 24px;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal-box {
-      width: 100%; max-width: 340px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--r-xl); padding: 24px 20px;
-      transform: scale(.95); transition: transform .25s;
-    }
-    .modal-overlay.open .modal-box { transform: scale(1); }
-    .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 18px; }
-
-    /* About info */
+    /* About info rows */
     .info-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
-      font-size: 13px;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 0; border-bottom:1px solid var(--border); font-size:13px;
     }
-    .info-row:last-child { border-bottom: none; }
-    .info-lbl { color: var(--text-muted); }
-    .info-val  { color: var(--text-primary); font-weight: 600; }
+    .info-row:last-child { border-bottom:none; }
+    .i-lbl { color:var(--muted); }
+    .i-val { color:var(--text); font-weight:600; }
   </style>
 </head>
 <body>
-<div class="app-wrap">
+<div class="app">
 
   <div class="app-bar">
-    <div class="app-bar-title">Settings</div>
+    <div class="app-bar-left">
+      <span class="app-bar-title">Settings</span>
+    </div>
     <button class="icon-btn" id="menuBtn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
     </button>
   </div>
 
   <div class="screen">
-    <div class="content">
+    <div style="padding-bottom:32px">
 
       <!-- Profile -->
-      <div class="profile-card" onclick="openEditProfile()">
-        <div class="avatar-lg" id="avatarEl">M</div>
+      <div class="prof-card" id="profCard">
+        <div class="av-lg" id="avEl">M</div>
         <div>
-          <div class="profile-name"  id="profNameEl">Loading...</div>
-          <div class="profile-email" id="profEmailEl">user@email.com</div>
-          <div class="profile-edit-hint">Tap to edit profile</div>
+          <div class="pn" id="pnEl">Loading...</div>
+          <div class="pe" id="peEl">user@email.com</div>
+          <div class="ph">Tap to edit profile</div>
         </div>
-        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg style="margin-left:auto;color:var(--muted)" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
 
       <!-- Notifications -->
-      <div class="setting-group-lbl mb16">Notifications</div>
-      <div class="mb20">
-        <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Push Notifications
-          </div>
-          <div class="tog-sw" id="sw-push" onclick="toggleSetting('push',this)"></div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Reminder Sound
-          </div>
-          <div class="tog-sw" id="sw-sound" onclick="toggleSetting('sound',this)"></div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Vibration
-          </div>
-          <div class="tog-sw off" id="sw-vibrate" onclick="toggleSetting('vibrate',this)"></div>
-        </div>
+      <div class="pad16 mb18">
+        <div class="sett-grp-lbl" style="margin-bottom:8px">Notifications</div>
+        <div class="sett-row"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>Push Notifications</div><div class="tog-sw" id="sw-push" onclick="togSw('push',this)"></div></div>
+        <div class="sett-row"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>Reminder Sound</div><div class="tog-sw" id="sw-sound" onclick="togSw('sound',this)"></div></div>
+        <div class="sett-row"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>Vibration</div><div class="tog-sw off" id="sw-vibrate" onclick="togSw('vibrate',this)"></div></div>
       </div>
 
       <!-- Wellness -->
-      <div class="setting-group-lbl mb16">Wellness</div>
-      <div class="mb20">
-        <div class="setting-row" onclick="resetChecklist()">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 105.6-8.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="3 4 3 12 11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Reset Today's Checklist
-          </div>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </div>
-        <div class="setting-row" onclick="clearHistory()">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 11v6M14 11v6M9 6V4h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Clear Activity History
-          </div>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </div>
-        <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Weekly Progress Report
-          </div>
-          <div class="tog-sw" id="sw-report" onclick="toggleSetting('report',this)"></div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Daily Motivational Quotes
-          </div>
-          <div class="tog-sw" id="sw-quotes" onclick="toggleSetting('quotes',this)"></div>
-        </div>
+      <div class="pad16 mb18">
+        <div class="sett-grp-lbl" style="margin-bottom:8px">Wellness</div>
+        <div class="sett-row" id="resetChkBtn"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 105.6-8.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="3 4 3 12 11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Reset Today's Checklist</div><svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="sett-row" id="clearHistBtn"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 11v6M14 11v6M9 6V4h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>Clear Activity History</div><svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="sett-row"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Weekly Progress Report</div><div class="tog-sw" id="sw-report" onclick="togSw('report',this)"></div></div>
+        <div class="sett-row"><div class="sett-left"><div class="sett-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Daily Motivational Quotes</div><div class="tog-sw" id="sw-quotes" onclick="togSw('quotes',this)"></div></div>
       </div>
 
       <!-- About -->
-      <div class="setting-group-lbl mb16">About</div>
-      <div class="card-box mb20">
-        <div class="info-row"><span class="info-lbl">App Name</span><span class="info-val">MyHealth Reminder</span></div>
-        <div class="info-row"><span class="info-lbl">Version</span><span class="info-val">1.0.0</span></div>
-        <div class="info-row"><span class="info-lbl">Purpose</span><span class="info-val">Daily Wellness Companion</span></div>
-        <div class="info-row"><span class="info-lbl">Platform</span><span class="info-val">MIT App Inventor</span></div>
+      <div class="pad16 mb18">
+        <div class="sett-grp-lbl" style="margin-bottom:8px">About</div>
+        <div class="card">
+          <div class="info-row"><span class="i-lbl">App Name</span><span class="i-val">MyHealth Reminder</span></div>
+          <div class="info-row"><span class="i-lbl">Version</span><span class="i-val">1.0.0</span></div>
+          <div class="info-row"><span class="i-lbl">Purpose</span><span class="i-val">Daily Wellness Companion</span></div>
+          <div class="info-row"><span class="i-lbl">Platform</span><span class="i-val">MIT App Inventor</span></div>
+        </div>
       </div>
 
-      <!-- Sign out & reset -->
-      <button class="btn-outline mb20" onclick="MH.auth.logout()" style="margin-bottom:10px">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        Sign Out
-      </button>
-      <button class="danger-btn" onclick="confirmReset()">Reset All App Data</button>
+      <!-- Actions -->
+      <div class="pad16">
+        <button class="btn-outline" id="signOutBtn" style="margin-bottom:10px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Sign Out
+        </button>
+        <button class="btn-danger" id="resetAllBtn">Reset All App Data</button>
+      </div>
 
     </div>
-  </div><!-- /screen -->
+  </div>
 
-  <!-- Bottom nav -->
   <nav class="bottom-nav">
-    <button class="nav-item" onclick="MH.go('dashboard.html')">
+    <button class="nav-btn" onclick="MH.go('dashboard.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Home</span>
+      <span class="nav-lbl">Home</span>
     </button>
-    <button class="nav-item" onclick="MH.go('progress.html')">
+    <button class="nav-btn" onclick="MH.go('progress.html')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span class="nav-label">Progress</span>
+      <span class="nav-lbl">Progress</span>
     </button>
-    <button class="nav-item active">
+    <button class="nav-btn active">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/></svg>
-      <span class="nav-label">Settings</span>
+      <span class="nav-lbl">Settings</span>
     </button>
   </nav>
 
-</div><!-- /app-wrap -->
+</div>
 
-<!-- Edit Profile Modal -->
-<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditProfile()">
+<!-- Edit profile modal -->
+<div class="modal-overlay" id="editModal">
   <div class="modal-box">
     <div class="modal-title">Edit Profile</div>
     <div class="form-group">
       <label class="form-lbl">Full Name</label>
       <input class="form-input" id="editName" type="text" placeholder="Your name"/>
     </div>
-    <div style="display:flex;gap:10px;margin-top:4px">
-      <button class="btn-primary" style="flex:1" onclick="saveProfile()">Save</button>
-      <button onclick="closeEditProfile()" style="flex:1;height:50px;border:1px solid var(--border);border-radius:var(--r-pill);background:none;color:var(--text-muted);font-family:var(--font);font-size:13.5px;font-weight:600;cursor:pointer">Cancel</button>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn-primary" style="flex:1" id="saveProfBtn">Save</button>
+      <button id="cancelProfBtn" style="flex:1;height:50px;border:1px solid var(--border);border-radius:var(--r-pill);background:none;color:var(--muted);font-family:var(--font);font-size:13.5px;font-weight:600;cursor:pointer">Cancel</button>
     </div>
   </div>
 </div>
 
 <!-- 3-dot menu sheet -->
-<div class="overlay" id="menuOverlay" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="bottom-sheet">
+<div class="overlay" id="menuOverlay">
+  <div class="b-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">More Options</div>
-    <div class="sheet-item" onclick="openEditProfile();document.getElementById('menuOverlay').classList.remove('open')">
+    <div class="sheet-item" id="si-edit">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Edit Profile
     </div>
-    <div class="sheet-item" onclick="MH.auth.logout()">
+    <div class="sheet-item danger" id="si-logout2">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       Sign Out
     </div>
@@ -221,78 +151,78 @@
 
 <script src="data.js"></script>
 <script>
-(function(){
+(function () {
   MH.auth.requireAuth();
-  const SETT_KEY = 'mh_settings';
 
-  function loadSettings() {
-    return JSON.parse(localStorage.getItem(SETT_KEY)||'{}');
-  }
-  function saveSetting(key, val) {
-    const s = loadSettings(); s[key]=val;
-    localStorage.setItem(SETT_KEY, JSON.stringify(s));
-  }
-
-  // Render profile
   function renderProfile() {
-    const sess = MH.auth.getSession();
-    document.getElementById('avatarEl').textContent    = sess.name.charAt(0).toUpperCase();
-    document.getElementById('profNameEl').textContent  = sess.name;
-    document.getElementById('profEmailEl').textContent = sess.email;
+    var sess = MH.auth.getSession();
+    document.getElementById('avEl').textContent = sess.name.charAt(0).toUpperCase();
+    document.getElementById('pnEl').textContent = sess.name;
+    document.getElementById('peEl').textContent = sess.email;
   }
   renderProfile();
 
-  // Load toggle states
-  const s = loadSettings();
-  ['push','sound','report','quotes'].forEach(k => {
-    const el = document.getElementById('sw-'+k);
-    if (el && s[k] === false) el.classList.add('off');
-  });
-  if (s['vibrate']) document.getElementById('sw-vibrate').classList.remove('off');
+  /* Load toggle states */
+  var s = MH.settings.get();
+  if (s.push    === false) document.getElementById('sw-push').classList.add('off');
+  if (s.sound   === false) document.getElementById('sw-sound').classList.add('off');
+  if (s.vibrate === true)  document.getElementById('sw-vibrate').classList.remove('off');
+  if (s.report  === false) document.getElementById('sw-report').classList.add('off');
+  if (s.quotes  === false) document.getElementById('sw-quotes').classList.add('off');
 
-  // Toggle function
-  window.toggleSetting = (key, el) => {
+  window.togSw = function (key, el) {
     el.classList.toggle('off');
-    saveSetting(key, !el.classList.contains('off'));
-    MH.toast(key.charAt(0).toUpperCase()+key.slice(1)+' '+(el.classList.contains('off')?'disabled':'enabled'));
+    MH.settings.set(key, !el.classList.contains('off'));
+    var state = el.classList.contains('off') ? 'disabled' : 'enabled';
+    MH.toast(key.charAt(0).toUpperCase() + key.slice(1) + ' ' + state);
   };
 
-  // Edit profile
-  window.openEditProfile = () => {
+  /* Profile */
+  document.getElementById('profCard').onclick = openEdit;
+  function openEdit() {
     document.getElementById('editName').value = MH.auth.getSession().name;
     document.getElementById('editModal').classList.add('open');
+  }
+  document.getElementById('cancelProfBtn').onclick = function () {
+    document.getElementById('editModal').classList.remove('open');
   };
-  window.closeEditProfile = () => document.getElementById('editModal').classList.remove('open');
-  window.saveProfile = () => {
-    const name = document.getElementById('editName').value.trim();
+  document.getElementById('editModal').onclick = function (e) {
+    if (e.target === this) this.classList.remove('open');
+  };
+  document.getElementById('saveProfBtn').onclick = function () {
+    var name = document.getElementById('editName').value.trim();
     if (!name) return;
     MH.auth.updateProfile(name);
     renderProfile();
-    closeEditProfile();
+    document.getElementById('editModal').classList.remove('open');
     MH.toast('Profile updated!');
   };
 
-  // Wellness actions
-  window.resetChecklist = () => {
+  /* Wellness actions */
+  document.getElementById('resetChkBtn').onclick = function () {
     if (!confirm('Reset today\'s checklist?')) return;
     MH.checklist.reset();
     MH.toast('Checklist reset for today!');
   };
-  window.clearHistory = () => {
+  document.getElementById('clearHistBtn').onclick = function () {
     if (!confirm('Clear all activity history?')) return;
     MH.history.clear();
     MH.toast('Activity history cleared.');
   };
-  window.confirmReset = () => {
-    if (!confirm('This will delete ALL app data including your account. Are you sure?')) return;
+  document.getElementById('signOutBtn').onclick = function () { MH.auth.logout(); };
+  document.getElementById('resetAllBtn').onclick = function () {
+    if (!confirm('Delete ALL app data including your account. Are you sure?')) return;
     localStorage.clear();
-    MH.go('index.html');
+    window.location.href = 'index.html';
   };
 
-  // 3-dot menu
-  document.getElementById('menuBtn').addEventListener('click', () =>
-    document.getElementById('menuOverlay').classList.add('open'));
-})();
+  /* 3-dot menu */
+  var overlay = document.getElementById('menuOverlay');
+  document.getElementById('menuBtn').onclick  = function () { overlay.classList.add('open'); };
+  overlay.onclick = function (e) { if (e.target === overlay) overlay.classList.remove('open'); };
+  document.getElementById('si-edit').onclick   = function () { overlay.classList.remove('open'); openEdit(); };
+  document.getElementById('si-logout2').onclick = function () { MH.auth.logout(); };
+}());
 </script>
 </body>
 </html>

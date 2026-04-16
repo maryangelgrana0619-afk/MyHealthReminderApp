@@ -6,174 +6,149 @@
   <title>Sign Up — MyHealth Reminder</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    .auth-wrap { justify-content: flex-start; padding-top: 48px; }
-    .auth-logo { margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .auth-logo-icon {
-      width: 60px; height: 60px; border-radius: 16px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; color: var(--accent);
-    }
-    .auth-app-name { font-size: 17px; font-weight: 700; color: var(--text-primary); }
-    .auth-title { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-    .auth-sub   { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
-    .form-box   { width: 100%; }
-    .pw-wrap    { position: relative; }
-    .pw-toggle  {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: var(--text-muted);
-      cursor: pointer; padding: 4px; transition: color var(--ease);
-    }
-    .pw-toggle:hover { color: var(--accent); }
-    .strength-bar {
-      height: 4px; border-radius: 2px; background: var(--bg-card2);
-      margin-top: 8px; overflow: hidden;
-    }
-    .strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0%; }
-    .strength-txt  { font-size: 11px; margin-top: 4px; }
-  </style>
 </head>
 <body>
-<div class="app-wrap">
-  <div class="screen">
-    <div class="auth-wrap">
+<div class="app">
+  <div class="auth-screen">
 
-      <div class="auth-logo">
-        <div class="auth-logo-icon">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/>
-            <rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/>
-            <rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/>
-            <circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/>
-            <path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+    <div class="auth-logo">
+      <div class="auth-logo-ico">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="5" width="15" height="3" rx="1.5" fill="currentColor"/>
+          <rect x="2" y="11" width="20" height="3" rx="1.5" fill="currentColor"/>
+          <rect x="2" y="17" width="12" height="3" rx="1.5" fill="currentColor"/>
+          <circle cx="21" cy="18.5" r="5" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M19.5 18.5L21 20L23 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="auth-app-nm">MyHealth Reminder</span>
+    </div>
+
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Start your wellness journey today.</p>
+
+    <div class="auth-form">
+
+      <div class="form-group">
+        <label class="form-lbl">Full Name</label>
+        <div class="input-icon-wrap">
+          <span class="input-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <input class="form-input" id="fName" type="text" placeholder="e.g. Mary Angel Grana" autocomplete="name"/>
         </div>
-        <span class="auth-app-name">MyHealth Reminder</span>
+        <p class="err-msg" id="nameErr">Please enter your full name.</p>
       </div>
 
-      <h1 class="auth-title">Create Account</h1>
-      <p class="auth-sub">Start your wellness journey today.</p>
-
-      <div class="form-box">
-        <div class="form-group">
-          <label class="form-lbl">Full Name</label>
-          <div class="input-wrap">
-            <span class="input-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </span>
-            <input class="form-input" id="fName" type="text" placeholder="Mary Angel Grana" autocomplete="name"/>
-          </div>
-          <p class="err-msg" id="nameErr">Please enter your full name.</p>
+      <div class="form-group">
+        <label class="form-lbl">Email</label>
+        <div class="input-icon-wrap">
+          <span class="input-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 8l10 6 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <input class="form-input" id="fEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"/>
         </div>
-
-        <div class="form-group">
-          <label class="form-lbl">Email</label>
-          <div class="input-wrap">
-            <span class="input-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 8l10 6 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </span>
-            <input class="form-input" id="fEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"/>
-          </div>
-          <p class="err-msg" id="emailErr">Please enter a valid email.</p>
-        </div>
-
-        <div class="form-group">
-          <label class="form-lbl">Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="fPass" type="password" placeholder="At least 6 characters" autocomplete="new-password" style="padding-right:44px"/>
-            <button class="pw-toggle" id="pwToggle1" type="button" tabindex="-1">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-          </div>
-          <div class="strength-bar"><div class="strength-fill" id="strFill"></div></div>
-          <p class="strength-txt" id="strTxt" style="color:var(--text-muted)"></p>
-          <p class="err-msg" id="passErr">Password must be at least 6 characters.</p>
-        </div>
-
-        <div class="form-group">
-          <label class="form-lbl">Confirm Password</label>
-          <div class="pw-wrap">
-            <input class="form-input" id="fPass2" type="password" placeholder="Re-enter password" autocomplete="new-password" style="padding-right:44px"/>
-            <button class="pw-toggle" id="pwToggle2" type="button" tabindex="-1">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-          </div>
-          <p class="err-msg" id="pass2Err">Passwords do not match.</p>
-        </div>
-
-        <button class="btn-primary" id="signupBtn">Create Account</button>
-
-        <div style="margin-top:18px;text-align:center;font-size:13px;color:var(--text-muted)">
-          Already have an account?
-          <a style="color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none" onclick="MH.go('login.html')">Sign In</a>
-        </div>
+        <p class="err-msg" id="emailErr">Please enter a valid email.</p>
       </div>
 
+      <div class="form-group">
+        <label class="form-lbl">Password</label>
+        <div class="pw-wrap">
+          <input class="form-input" id="fPass" type="password" placeholder="At least 6 characters" autocomplete="new-password" style="padding-right:46px"/>
+          <button class="pw-tog" id="pwTog1" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </div>
+        <div class="str-bar"><div class="str-fill" id="strFill"></div></div>
+        <p class="str-txt" id="strTxt" style="color:var(--muted)"></p>
+        <p class="err-msg" id="passErr">Password must be at least 6 characters.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-lbl">Confirm Password</label>
+        <div class="pw-wrap">
+          <input class="form-input" id="fPass2" type="password" placeholder="Re-enter password" autocomplete="new-password" style="padding-right:46px"/>
+          <button class="pw-tog" id="pwTog2" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </div>
+        <p class="err-msg" id="pass2Err">Passwords do not match.</p>
+      </div>
+
+      <button class="btn-primary" id="signupBtn">Create Account</button>
+
+      <div class="auth-foot">
+        Already have an account? <a id="goLogin">Sign In</a>
+      </div>
     </div>
   </div>
 </div>
 
 <script src="data.js"></script>
 <script>
-  if (MH.auth.isLoggedIn()) MH.go('dashboard.html');
+  if (MH.auth.isLoggedIn()) { window.location.href = 'dashboard.html'; }
 
-  // Password toggles
-  document.getElementById('pwToggle1').addEventListener('click', () => {
-    const i = document.getElementById('fPass'); i.type = i.type==='password'?'text':'password';
-  });
-  document.getElementById('pwToggle2').addEventListener('click', () => {
-    const i = document.getElementById('fPass2'); i.type = i.type==='password'?'text':'password';
-  });
+  document.getElementById('goLogin').onclick = function () { MH.go('login.html'); };
 
-  // Strength meter
-  document.getElementById('fPass').addEventListener('input', function() {
-    const v = this.value;
-    let s = 0;
-    if (v.length >= 6) s++;
-    if (v.length >= 10) s++;
-    if (/[A-Z]/.test(v)) s++;
-    if (/[0-9]/.test(v)) s++;
+  /* Password toggles */
+  document.getElementById('pwTog1').onclick = function () {
+    var i = document.getElementById('fPass');
+    i.type = i.type === 'password' ? 'text' : 'password';
+  };
+  document.getElementById('pwTog2').onclick = function () {
+    var i = document.getElementById('fPass2');
+    i.type = i.type === 'password' ? 'text' : 'password';
+  };
+
+  /* Strength meter */
+  document.getElementById('fPass').oninput = function () {
+    var v = this.value;
+    var s = 0;
+    if (v.length >= 6)          s++;
+    if (v.length >= 10)         s++;
+    if (/[A-Z]/.test(v))        s++;
+    if (/[0-9]/.test(v))        s++;
     if (/[^A-Za-z0-9]/.test(v)) s++;
-    const labels = ['','Weak','Fair','Good','Strong','Very strong'];
-    const colors = ['','#F87171','#FBBF24','#60A5FA','#4ADE80','#4ADE80'];
-    const fill = document.getElementById('strFill');
-    const txt  = document.getElementById('strTxt');
-    fill.style.width   = (s/5*100)+'%';
-    fill.style.background = colors[s]||'';
-    txt.textContent    = v ? labels[s] : '';
-    txt.style.color    = colors[s]||'var(--text-muted)';
-  });
+    var labels = ['','Weak','Fair','Good','Strong','Very strong'];
+    var colors = ['','#F87171','#FBBF24','#60A5FA','#4ADE80','#4ADE80'];
+    document.getElementById('strFill').style.width      = (s / 5 * 100) + '%';
+    document.getElementById('strFill').style.background = colors[s] || '';
+    document.getElementById('strTxt').textContent       = v ? labels[s] : '';
+    document.getElementById('strTxt').style.color       = colors[s] || 'var(--muted)';
+  };
 
-  document.getElementById('signupBtn').addEventListener('click', e => {
-    MH.ripple(e.currentTarget, e);
-    const name  = document.getElementById('fName').value.trim();
-    const email = document.getElementById('fEmail').value.trim();
-    const pass  = document.getElementById('fPass').value;
-    const pass2 = document.getElementById('fPass2').value;
-    let ok = true;
+  function doSignup() {
+    var name  = document.getElementById('fName').value.trim();
+    var email = document.getElementById('fEmail').value.trim();
+    var pass  = document.getElementById('fPass').value;
+    var pass2 = document.getElementById('fPass2').value;
 
-    ['nameErr','emailErr','passErr','pass2Err'].forEach(id => document.getElementById(id).classList.remove('show'));
+    ['nameErr','emailErr','passErr','pass2Err'].forEach(function(id){ document.getElementById(id).classList.remove('show'); });
 
-    if (!name) { document.getElementById('nameErr').classList.add('show'); ok=false; }
-    if (!email || !email.includes('@')) { document.getElementById('emailErr').classList.add('show'); ok=false; }
-    if (pass.length < 6) { document.getElementById('passErr').classList.add('show'); ok=false; }
-    if (pass !== pass2)  { document.getElementById('pass2Err').classList.add('show'); ok=false; }
+    var ok = true;
+    if (!name)                         { document.getElementById('nameErr').classList.add('show');  ok = false; }
+    if (!email || email.indexOf('@') === -1) { document.getElementById('emailErr').classList.add('show'); ok = false; }
+    if (pass.length < 6)               { document.getElementById('passErr').classList.add('show');  ok = false; }
+    if (pass !== pass2)                { document.getElementById('pass2Err').classList.add('show'); ok = false; }
     if (!ok) return;
 
-    const res = MH.auth.register(name, email, pass);
+    var res = MH.auth.register(name, email, pass);
     if (!res.ok) {
       document.getElementById('emailErr').textContent = res.msg;
       document.getElementById('emailErr').classList.add('show');
       return;
     }
-    MH.toast('Account created! Welcome, ' + name.split(' ')[0] + '!');
-    setTimeout(() => MH.go('dashboard.html'), 700);
-  });
+    MH.toast('Welcome, ' + name.split(' ')[0] + '! Account created.');
+    setTimeout(function () { window.location.href = 'dashboard.html'; }, 600);
+  }
 
-  ['fName','fEmail','fPass','fPass2'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('signupBtn').click();
-    });
+  document.getElementById('signupBtn').onclick = function (e) {
+    MH.ripple(e.currentTarget, e);
+    doSignup();
+  };
+
+  ['fName','fEmail','fPass','fPass2'].forEach(function(id){
+    document.getElementById(id).onkeydown = function(e){ if(e.key==='Enter') doSignup(); };
   });
 </script>
 </body>
