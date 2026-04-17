@@ -123,7 +123,8 @@
     var pass  = document.getElementById('fPass').value;
     var pass2 = document.getElementById('fPass2').value;
 
-    ['nameErr','emailErr','passErr','pass2Err'].forEach(function(id){ document.getElementById(id).classList.remove('show'); });
+    var errIds = ['nameErr','emailErr','passErr','pass2Err'];
+    for (var ei = 0; ei < errIds.length; ei++) { document.getElementById(errIds[ei]).classList.remove('show'); }
 
     var ok = true;
     if (!name)                         { document.getElementById('nameErr').classList.add('show');  ok = false; }
@@ -147,9 +148,12 @@
     doSignup();
   };
 
-  ['fName','fEmail','fPass','fPass2'].forEach(function(id){
-    document.getElementById(id).onkeydown = function(e){ if(e.key==='Enter') doSignup(); };
-  });
+  var inputIds = ['fName','fEmail','fPass','fPass2'];
+  for (var ii = 0; ii < inputIds.length; ii++) {
+    (function(inputId){
+      document.getElementById(inputId).onkeydown = function(e){ if(e.key==='Enter') doSignup(); };
+    }(inputIds[ii]));
+  }
 </script>
 </body>
 </html>
