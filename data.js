@@ -1,5 +1,5 @@
 /* ============================================
-   MyHealth Reminder — Data Layer v4
+   MyHealth Reminder — Data Layer v5
    data.js  — loaded by every page
    ============================================ */
 
@@ -114,20 +114,19 @@ var MH = (function () {
   var checklist = {
     _todayKey: function () {
       var d = new Date();
-      return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+      return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     },
 
     _ensureReset: function () {
       var today = this._todayKey();
       var lastDay = load(uk('mh_checklist_day'));
       if (lastDay !== today) {
-        /* New day — reset all done flags */
-        var existing = load(uk('mh_checklist_items')) || DEFAULT_CHECKLIST.map(function(x){ return Object.assign({},x); });
+        var existing = load(uk('mh_checklist_items')) || DEFAULT_CHECKLIST.map(function (x) { return Object.assign({}, x); });
+        /* Save yesterday's score before resetting */
+        weeklyHistory._saveYesterday(lastDay, checklist_progress_raw(existing));
         var reset = existing.map(function (x) { return Object.assign({}, x, { done: false }); });
         save(uk('mh_checklist_items'), reset);
         save(uk('mh_checklist_day'), today);
-        /* Save today's score to weekly history before reset */
-        weeklyHistory._saveYesterday(lastDay, checklist_progress_raw(load(uk('mh_checklist_items'))));
       }
     },
 
@@ -135,7 +134,7 @@ var MH = (function () {
       this._ensureReset();
       var items = load(uk('mh_checklist_items'));
       if (!items || items.length === 0) {
-        items = DEFAULT_CHECKLIST.map(function(x){ return Object.assign({},x); });
+        items = DEFAULT_CHECKLIST.map(function (x) { return Object.assign({}, x); });
         save(uk('mh_checklist_items'), items);
       }
       return items;
@@ -147,21 +146,21 @@ var MH = (function () {
         return x.id === id ? Object.assign({}, x, { done: !x.done }) : x;
       });
       save(uk('mh_checklist_items'), list);
-      var item = list.filter(function(x){ return x.id===id; })[0];
+      var item = null;
+      for (var i = 0; i < list.length; i++) { if (list[i].id === id) { item = list[i]; break; } }
       if (item && item.done) history.log(item.label);
       return list;
     },
 
     reset: function () {
-      var items = (load(uk('mh_checklist_items')) || DEFAULT_CHECKLIST).map(function(x){
-        return Object.assign({},x,{done:false});
+      var items = (load(uk('mh_checklist_items')) || DEFAULT_CHECKLIST).map(function (x) {
+        return Object.assign({}, x, { done: false });
       });
       save(uk('mh_checklist_items'), items);
     },
 
     progress: function () {
-      var list = this.get();
-      return checklist_progress_raw(list);
+      return checklist_progress_raw(this.get());
     },
 
     addItem: function (label) {
@@ -173,14 +172,14 @@ var MH = (function () {
 
     deleteItem: function (id) {
       this._ensureReset();
-      var list = this.get().filter(function(x){ return x.id !== id; });
+      var list = this.get().filter(function (x) { return x.id !== id; });
       save(uk('mh_checklist_items'), list);
     }
   };
 
   function checklist_progress_raw(list) {
-    if (!list || list.length === 0) return { done:0, total:0, pct:0 };
-    var done = list.filter(function(x){ return x.done; }).length;
+    if (!list || list.length === 0) return { done: 0, total: 0, pct: 0 };
+    var done = list.filter(function (x) { return x.done; }).length;
     return { done: done, total: list.length, pct: Math.round((done / list.length) * 100) };
   }
 
@@ -190,44 +189,45 @@ var MH = (function () {
   var weeklyHistory = {
     _key: function () { return uk('mh_weekly'); },
 
-    /* Called on day-reset to persist yesterday's score */
+    _dateKey: function (d) {
+      return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    },
+
     _saveYesterday: function (dateKey, prog) {
       if (!dateKey) return;
       var data = load(this._key()) || {};
       data[dateKey] = prog ? prog.pct : 0;
-      /* Keep only last 30 days */
       var keys = Object.keys(data).sort();
       if (keys.length > 30) {
         var trimmed = {};
-        keys.slice(-30).forEach(function(k){ trimmed[k] = data[k]; });
+        for (var i = keys.length - 30; i < keys.length; i++) { trimmed[keys[i]] = data[keys[i]]; }
         data = trimmed;
       }
       save(this._key(), data);
     },
 
-    /* Save today's current progress live */
     saveToday: function (pct) {
       var data = load(this._key()) || {};
-      data[new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()] = pct;
+      data[this._dateKey(new Date())] = pct;
       save(this._key(), data);
     },
 
-    /* Returns array of {day, val, isToday} for Mon–Sun of current week */
     getThisWeek: function () {
       var data = load(this._key()) || {};
       var today = new Date();
-      var todayIdx = (today.getDay() + 6) % 7; /* 0=Mon */
-      var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      var todayIdx = (today.getDay() + 6) % 7; /* 0=Mon…6=Sun */
+      var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       var result = [];
       for (var i = 0; i < 7; i++) {
         var diff = i - todayIdx;
-        var d = new Date(today);
+        var d = new Date(today.getTime());
         d.setDate(d.getDate() + diff);
-        var key = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+        var key = this._dateKey(d);
         result.push({
           day: days[i],
-          val: data[key] !== undefined ? data[key] : 0,
-          isToday: i === todayIdx
+          val: (data[key] !== undefined) ? data[key] : 0,
+          isToday: i === todayIdx,
+          isFuture: i > todayIdx
         });
       }
       return result;
@@ -267,7 +267,9 @@ var MH = (function () {
      SETTINGS
   ══════════════════════════════ */
   var settings = {
-    get: function () { return load(uk('mh_settings')) || { push:true, sound:true, vibrate:false, report:true, quotes:true }; },
+    get: function () {
+      return load(uk('mh_settings')) || { push: true, sound: true, vibrate: false, report: true, quotes: true };
+    },
     set: function (key, val) {
       var s = this.get();
       s[key] = val;
@@ -276,9 +278,10 @@ var MH = (function () {
   };
 
   /* ══════════════════════════════
-     QUOTES
+     DAILY-ROTATING QUOTES
+     Rotates by day-of-year so every day has a new quote
   ══════════════════════════════ */
-  var QUOTES = [
+  var ALL_QUOTES = [
     '"Consistency is more important than perfection. Every small step counts!"',
     '"Your health is an investment, not an expense."',
     '"Small daily improvements lead to stunning results."',
@@ -287,9 +290,99 @@ var MH = (function () {
     '"Progress, not perfection. You\'re doing great!"',
     '"Every healthy choice brings you closer to your best self."',
     '"A journey of a thousand miles begins with a single step."',
-    '"Invest in your health today for a better tomorrow."'
+    '"Invest in your health today for a better tomorrow."',
+    '"The groundwork for all happiness is good health."',
+    '"He who has health has hope, and he who has hope has everything."',
+    '"To keep the body in good health is a duty — otherwise we shall not be able to keep our mind strong."',
+    '"Healthy habits are learned in the same way as unhealthy ones — through practice."',
+    '"An apple a day keeps the doctor away — start simple!"',
+    '"Your body hears everything your mind says. Stay positive!"',
+    '"Taking care of yourself is productivity."',
+    '"Rest when you\'re weary. Refresh and renew yourself."',
+    '"Health is not about the weight you lose, but about the life you gain."',
+    '"You don\'t have to be great to start, but you have to start to be great."',
+    '"Believe you can and you\'re halfway there."',
+    '"Small steps every day lead to big changes over time."',
+    '"Drink more water. Sleep more. Move more. Stress less."',
+    '"Your future self will thank you for the healthy choices you make today."',
+    '"Every day is a new opportunity to improve your health."',
+    '"Strive for progress, not perfection."',
+    '"Take it one day at a time. You\'re doing better than you think."',
+    '"Wellness is the complete integration of body, mind, and spirit."',
+    '"The secret to a healthy life is no secret — just daily action."',
+    '"Be patient with yourself. Nothing in nature blooms all year."',
+    '"You are one workout, one glass of water, one good night\'s sleep away from a better mood."',
+    '"Start where you are. Use what you have. Do what you can."'
   ];
-  function getQuote() { return QUOTES[Math.floor(Math.random() * QUOTES.length)]; }
+
+  /* ── Daily-rotating wellness tips (7 unique sets, one per weekday) ── */
+  var ALL_TIPS = [
+    /* 0 = Monday */
+    [
+      'Start your week strong — drink a full glass of water before your morning coffee.',
+      'A 10-minute walk after lunch improves digestion and boosts afternoon energy.',
+      'Write down one wellness goal for the week and review it each morning.',
+      'Prep healthy snacks for the week so you always have good options ready.'
+    ],
+    /* 1 = Tuesday */
+    [
+      'Stretch for 5 minutes after waking up to loosen joints and improve circulation.',
+      'Add one extra serving of vegetables to at least one meal today.',
+      'Practice the 20-20-20 rule: every 20 minutes, look 20 feet away for 20 seconds.',
+      'Take the stairs instead of the elevator whenever you get the chance.'
+    ],
+    /* 2 = Wednesday */
+    [
+      'Midweek check-in: review your progress on this week\'s wellness goal.',
+      'Deep breathing for 5 minutes can significantly reduce stress and anxiety.',
+      'Drink water before every meal — it aids digestion and helps portion control.',
+      'Swap a sugary snack for a piece of fruit or a handful of nuts today.'
+    ],
+    /* 3 = Thursday */
+    [
+      'Getting 7–9 hours of sleep is one of the best things you can do for your health.',
+      'Try a 2-minute mindfulness pause between tasks to reset your focus.',
+      'Posture check! Sit up straight, relax your shoulders, and unclench your jaw.',
+      'Reach out to a friend or family member — social connection boosts wellbeing.'
+    ],
+    /* 4 = Friday */
+    [
+      'End your week by celebrating one healthy habit you kept this week.',
+      'Plan your weekend meals in advance to avoid unhealthy impulse choices.',
+      'A 30-minute evening walk is a great way to wind down after a busy week.',
+      'Limit screen time one hour before bed to improve sleep quality tonight.'
+    ],
+    /* 5 = Saturday */
+    [
+      'Use your weekend to try a new physical activity — hiking, cycling, or yoga.',
+      'Cook a nutritious meal at home instead of ordering out — you control the ingredients.',
+      'Spend time outdoors today. Natural light and fresh air do wonders for mood.',
+      'Practice gratitude: write down three things you are thankful for today.'
+    ],
+    /* 6 = Sunday */
+    [
+      'Use Sunday to set intentions for a healthy week ahead.',
+      'Prepare your checklist and reminders for tomorrow so you start strong.',
+      'Get to bed at a consistent time tonight — your body clock will thank you.',
+      'Reflect on last week: what healthy habit are you most proud of?'
+    ]
+  ];
+
+  /* Returns today's quote (changes each calendar day) */
+  function getDailyQuote() {
+    var now = new Date();
+    var start = new Date(now.getFullYear(), 0, 0);
+    var diff = now - start;
+    var oneDay = 1000 * 60 * 60 * 24;
+    var dayOfYear = Math.floor(diff / oneDay); /* 1–365 */
+    return ALL_QUOTES[dayOfYear % ALL_QUOTES.length];
+  }
+
+  /* Returns today's tips array (changes each weekday: Mon=0 … Sun=6) */
+  function getDailyTips() {
+    var dayOfWeek = (new Date().getDay() + 6) % 7; /* 0=Mon…6=Sun */
+    return ALL_TIPS[dayOfWeek];
+  }
 
   /* ══════════════════════════════
      UTILITIES
@@ -311,10 +404,10 @@ var MH = (function () {
     var days  = Math.floor(diff / 86400000);
     if (mins < 1)   return 'Just now';
     if (mins < 60)  return mins + 'm ago';
-    if (hours < 24) return 'Today, ' + fmtTime(new Date(ts).toTimeString().slice(0,5));
-    if (days === 1) return 'Yesterday, ' + fmtTime(new Date(ts).toTimeString().slice(0,5));
+    if (hours < 24) return 'Today, ' + fmtTime(new Date(ts).toTimeString().slice(0, 5));
+    if (days === 1) return 'Yesterday, ' + fmtTime(new Date(ts).toTimeString().slice(0, 5));
     var d = new Date(ts);
-    return d.toLocaleDateString('en-US', { weekday: 'short' }) + ', ' + fmtTime(d.toTimeString().slice(0,5));
+    return d.toLocaleDateString('en-US', { weekday: 'short' }) + ', ' + fmtTime(d.toTimeString().slice(0, 5));
   }
 
   function ripple(btn, e) {
@@ -324,7 +417,8 @@ var MH = (function () {
     var size = Math.max(rect.width, rect.height);
     var sp = document.createElement('span');
     sp.className = 'ripple';
-    sp.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size/2) + 'px;top:' + (e.clientY - rect.top - size/2) + 'px';
+    sp.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' +
+      (e.clientX - rect.left - size / 2) + 'px;top:' + (e.clientY - rect.top - size / 2) + 'px';
     btn.appendChild(sp);
     sp.addEventListener('animationend', function () { sp.remove(); });
   }
@@ -346,18 +440,19 @@ var MH = (function () {
 
   /* Public API */
   return {
-    auth: auth,
-    reminders: reminders,
-    checklist: checklist,
+    auth:          auth,
+    reminders:     reminders,
+    checklist:     checklist,
     weeklyHistory: weeklyHistory,
-    history: history,
-    streak: streak,
-    settings: settings,
-    getQuote: getQuote,
-    go: go,
-    fmtTime: fmtTime,
-    fmtRelative: fmtRelative,
-    ripple: ripple,
-    toast: toast
+    history:       history,
+    streak:        streak,
+    settings:      settings,
+    getDailyQuote: getDailyQuote,
+    getDailyTips:  getDailyTips,
+    go:            go,
+    fmtTime:       fmtTime,
+    fmtRelative:   fmtRelative,
+    ripple:        ripple,
+    toast:         toast
   };
 }());
